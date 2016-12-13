@@ -4,8 +4,6 @@ import com.thoughtworks.gauge.Step;
 import com.thoughtworks.gauge.Table;
 import com.thoughtworks.gauge.test.common.builders.HooksBuilder;
 
-import static com.thoughtworks.gauge.test.common.GaugeProject.currentProject;
-
 
 public class ExecutionHooks {
 

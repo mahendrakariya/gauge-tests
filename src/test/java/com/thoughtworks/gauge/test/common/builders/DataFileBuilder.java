@@ -22,10 +22,10 @@ public class DataFileBuilder {
     public void build() throws IOException {
         File file = null;
         if(csvFile!=null)
-            file = GaugeProject.currentProject.createCsv(csvFile, subDirPath);
+            file = GaugeProject.getCurrentProject().createCsv(csvFile, subDirPath);
 
         if(txtFile!=null)
-            file = GaugeProject.currentProject.createTxt(txtFile,subDirPath);
+            file = GaugeProject.getCurrentProject().createTxt(txtFile,subDirPath);
 
         Util.writeToFile(file.getAbsolutePath(), (content==null||content.isEmpty())? this.toString() : String.join("\n", content));
     }

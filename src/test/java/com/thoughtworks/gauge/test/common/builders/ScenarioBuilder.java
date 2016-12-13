@@ -9,8 +9,6 @@ import com.thoughtworks.gauge.test.common.Specification;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.thoughtworks.gauge.test.common.GaugeProject.currentProject;
-
 public class ScenarioBuilder {
 
     private String scenarioName;

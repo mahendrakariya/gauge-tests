@@ -20,7 +20,7 @@ public abstract class GaugeProject {
     private static final String PRODUCT_PREFIX = "GAUGE_";
     static final String PRINT_PARAMS = "print params";
     static final String THROW_EXCEPTION = "throw exception";
-    public static GaugeProject currentProject;
+    public static Map<String, GaugeProject> projects = new HashMap<>();
     private static String executableName = "gauge";
     private static String specsDirName = "specs";
     private ArrayList<Concept> concepts = new ArrayList<>();
@@ -34,7 +34,7 @@ public abstract class GaugeProject {
 
     protected GaugeProject(String language, String projName) throws IOException {
         this.language = language;
-        currentProject = this;
+        projects.put(Thread.currentThread().getName(), this);
 
         this.projectDir = Files.createTempDirectory(projName + projectCount++ + "_").toFile();
         projectDir.deleteOnExit();
@@ -42,10 +42,11 @@ public abstract class GaugeProject {
     }
 
     public static GaugeProject getCurrentProject() {
-        if (currentProject == null) {
+        GaugeProject gaugeProject = projects.get(Thread.currentThread().getName());
+        if (gaugeProject == null) {
             throw new RuntimeException("Gauge project is not initialized yet");
         }
-        return currentProject;
+        return gaugeProject;
     }
 
     public static GaugeProject createProject(String language, String projName) throws IOException {
@@ -335,16 +336,16 @@ public abstract class GaugeProject {
     }
 
     public void refactorStep(String oldStep, String newStep) throws Exception {
-        ExecutionSummary result = currentProject.executeRefactor(oldStep, newStep);
+        ExecutionSummary result = getCurrentProject().executeRefactor(oldStep, newStep);
         if (!result.getSuccess()) {
-            System.out.println(currentProject.getLastProcessStdout());
+            System.out.println(getCurrentProject().getLastProcessStdout());
         }
     }
 
     public static void implement(Table impl, TableRow row,boolean appendCode) throws Exception {
         if(impl.getColumnNames().contains("implementation")) {
             StepImpl stepImpl = new StepImpl(row.getCell("step text"), row.getCell("implementation"), Boolean.parseBoolean(row.getCell("continue on failure")), appendCode, row.getCell("error type"));
-            currentProject.implementStep(stepImpl);
+            getCurrentProject().implementStep(stepImpl);
         }
     }
 

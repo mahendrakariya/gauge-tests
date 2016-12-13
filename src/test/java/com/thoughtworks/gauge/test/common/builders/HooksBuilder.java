@@ -2,7 +2,7 @@ package com.thoughtworks.gauge.test.common.builders;
 
 import com.thoughtworks.gauge.Table;
 
-import static com.thoughtworks.gauge.test.common.GaugeProject.currentProject;
+import static com.thoughtworks.gauge.test.common.GaugeProject.getCurrentProject;
 
 public class HooksBuilder {
     private String hookLevel;
@@ -29,13 +29,13 @@ public class HooksBuilder {
 
     public void build() throws Exception {
         if(hasException)
-            currentProject.createHookWithException(hookLevel, hookType);
+            getCurrentProject().createHookWithException(hookLevel, hookType);
 
         if(tags!=null)
-            currentProject.createHooksWithTagsAndPrintMessage(hookLevel, hookType, implementation, aggregation, tags);
+            getCurrentProject().createHooksWithTagsAndPrintMessage(hookLevel, hookType, implementation, aggregation, tags);
 
         if(!hasException && tags==null)
-            currentProject.createHookWithPrint(hookLevel, hookType, implementation);
+            getCurrentProject().createHookWithPrint(hookLevel, hookType, implementation);
     }
 
     public HooksBuilder withException() {
